@@ -73,46 +73,27 @@ def get_mini_matrices(matrix):
 
 
 def main():
-    matrix = get_matrix("test_input.txt")
+    matrix = get_matrix("input.txt")
     mini_matrices = get_mini_matrices(matrix)
-    top_left_to_bottom_right_diagonals = []
-    reverse_top_left_to_bottom_right_diagonals = []
-    top_right_to_bottom_left_diagonals = []
-    reverse_top_right_to_bottom_left_diagonals = []
-
-    lines = []
-
-    for mini_matrix in mini_matrices:
-        print_matrix(mini_matrix)
-
-        # Main diagonal
-        main_diagonal = [mini_matrix[i][i] for i in range(len(mini_matrix))]
-        lines.append(main_diagonal)
-        reverse_main_diagonal = reverse_lists(main_diagonal)
-        lines.append(reverse_main_diagonal)
-        print("Main diagonal:", main_diagonal)
-        print("Reverse Main diagonal:", reverse_main_diagonal)
-
-        # Anti-diagonal
-        anti_diagonal = [mini_matrix[i][len(mini_matrix) - 1 - i] for i in range(len(mini_matrix))]
-        lines.append(anti_diagonal)
-        reverse_anti_diagonal = reverse_lists(anti_diagonal)
-        lines.append(reverse_anti_diagonal)
-        print("Anti-diagonal:", anti_diagonal)
-        print("Reverse Anti-diagonal:", reverse_anti_diagonal)
-
-
-
 
     count = 0
 
-    for line in lines:
-        if line == ['M', 'A', 'S']:
+    for mini_matrix in mini_matrices:
+
+        # Main diagonal
+        main_diagonal = [mini_matrix[i][i] for i in range(len(mini_matrix))]
+        reverse_main_diagonal = reverse_lists(main_diagonal)
+
+        # Anti-diagonal
+        anti_diagonal = [mini_matrix[i][len(mini_matrix) - 1 - i] for i in range(len(mini_matrix))]
+        reverse_anti_diagonal = reverse_lists(anti_diagonal)
+
+        if ((main_diagonal == ['M', 'A', 'S'] or reverse_main_diagonal == ['M', 'A', 'S'])
+                and (anti_diagonal == ['M', 'A', 'S'] or reverse_anti_diagonal == ['M', 'A', 'S'])):
+            print_matrix(mini_matrix)
             count += 1
 
-
-
-    print(len(mini_matrices))
+    print(count)
 
 
 if __name__ == '__main__':
