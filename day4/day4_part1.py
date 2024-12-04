@@ -9,12 +9,6 @@ def get_matrix(file):
             matrix.append(row)
     return matrix
 
-def get_column(matrix, n):
-    return matrix[:, n]
-
-def get_row(matrix, n):
-    return matrix[n, :]
-
 def get_diagonals_top_left_to_bottom_right(matrix):
     rows = len(matrix)
     cols = len(matrix[0])
@@ -74,16 +68,20 @@ def main():
     top_right_to_bottom_left_diagonals = get_diagonals_top_right_to_bottom_left(matrix)
     reverse_top_right_to_bottom_left_diagonals = reverse_lists(top_right_to_bottom_left_diagonals)
 
-    lines = [rows, reversed_rows, columns, reversed_columns, top_left_to_bottom_right_diagonals, reverse_top_left_to_bottom_right_diagonals, top_right_to_bottom_left_diagonals, reverse_top_right_to_bottom_left_diagonals ]
+    lines = [rows,
+             reversed_rows,
+             columns,
+             reversed_columns,
+             top_left_to_bottom_right_diagonals,
+             reverse_top_left_to_bottom_right_diagonals,
+             top_right_to_bottom_left_diagonals,
+             reverse_top_right_to_bottom_left_diagonals ]
 
     count = 0
     for line in lines:
         count += count_xmas((line))
 
     print(count)
-
-
-
 
 
 if __name__ == '__main__':
