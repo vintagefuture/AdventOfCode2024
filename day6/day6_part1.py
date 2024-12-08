@@ -11,8 +11,7 @@ def get_obstacles(file_path):
     return obstacles_coordinates, guard_initial_position
 
 
-def check_obstacle(obstacles_coordinates, initial_position):
-    direction = 'up'
+def found_obstacle(obstacles_coordinates, initial_position, direction):
     next_coordinates = go_forward(initial_position, direction)
     if next_coordinates in obstacles_coordinates:
         return True
@@ -38,6 +37,15 @@ def go_forward(initial_position, direction):
 
 def main():
     obstacles_coordinates, initial_position = get_obstacles("test_input.txt")
+    direction = 'up'
+    total_positions = 1
+    while not found_obstacle(obstacles_coordinates, initial_position, direction):
+        initial_position = go_forward(initial_position, direction)
+        print(initial_position)
+        total_positions += 1
+
+    print(total_positions)
+
 
 
 if __name__ == '__main__':
