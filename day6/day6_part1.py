@@ -45,15 +45,14 @@ def go_forward(initial_position, direction):
     return next_position
 
 def main():
-    obstacles_coordinates, initial_position = get_obstacles("test_input.txt")
-    total_rows, total_columns = get_file_dimensions("test_input.txt")
+    obstacles_coordinates, initial_position = get_obstacles("input.txt")
+    total_rows, total_columns = get_file_dimensions("input.txt")
     total_positions = 0
     directions = cycle(['up', 'right', 'down', 'left'])
     current_position = initial_position
     direction = next(directions)
     visited = [initial_position]
     while (0 <= current_position[0] <= total_columns) and (0 <= current_position[1] <= total_rows):
-        print(direction)
         next_position = go_forward(current_position, direction)
         if next_position not in obstacles_coordinates:
             if next_position not in visited:
@@ -64,7 +63,7 @@ def main():
         else:
             direction = next(directions)
 
-    print(f'total_positions: {total_positions}')
+    print(f'Total positions: {total_positions}')
 
 
 if __name__ == '__main__':
