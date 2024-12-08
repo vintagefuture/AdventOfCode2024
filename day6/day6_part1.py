@@ -47,25 +47,24 @@ def go_forward(initial_position, direction):
 def main():
     obstacles_coordinates, initial_position = get_obstacles("test_input.txt")
     total_rows, total_columns = get_file_dimensions("test_input.txt")
-    total_positions = 1
-    possible_directions = ['up', 'right', 'down', 'left']
-    directions = cycle(possible_directions)
+    total_positions = 0
+    directions = cycle(['up', 'right', 'down', 'left'])
     current_position = initial_position
-    for direction in directions:
-        print(f'Changing direction to {direction}')
-        if (current_position[0] > total_columns) or (current_position[1] > total_rows):
-            break
-        while (not found_obstacle(obstacles_coordinates, current_position, direction)) and (current_position[0] <= total_columns) and (current_position[1] <= total_rows):
-            current_position = go_forward(current_position, direction)
-            print(current_position)
-            total_positions += 1
-        print('Ops! Found an obstacle!')
+    direction = next(directions)
+    visited = [initial_position]
+    while (0 <= current_position[0] <= total_columns) and (0 <= current_position[1] <= total_rows):
+        print(direction)
+        next_position = go_forward(current_position, direction)
+        if next_position not in obstacles_coordinates:
+            if next_position not in visited:
+                total_positions += 1
+            current_position = next_position
+            visited.append(next_position)
 
-        print('New initial position: ' + str(current_position))
+        else:
+            direction = next(directions)
 
-
-
-    print(f'Total positions: {total_positions}')
+    print(f'total_positions: {total_positions}')
 
 
 if __name__ == '__main__':
