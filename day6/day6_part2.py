@@ -24,7 +24,6 @@ def found_obstacle(obstacles_coordinates, initial_position, direction):
     next_coordinates = go_forward(initial_position, direction)
     if next_coordinates in obstacles_coordinates:
         return True
-
     return False
 
 def go_forward(initial_position, direction):
@@ -48,15 +47,17 @@ def is_loop(obstacles_coordinates, initial_position, total_columns, total_rows):
     directions = cycle(['up', 'right', 'down', 'left'])
     current_position = initial_position
     direction = next(directions)
-    while (current_position[0] <= total_columns) and (current_position[1] <= total_rows):
+    encountered_obstacle = dict()
+    while (0 <= current_position[0] <= total_columns) and (0 <= current_position[1] <= total_rows):
         next_position = go_forward(current_position, direction)
         print(next_position)
         if next_position not in obstacles_coordinates:
             current_position = next_position
-            if next_position == initial_position and direction == 'up':
-                return True
+        # elif next_position in encountered_obstacle and encountered_obstacle[tuple((next_position))] == direction:
+        #     return True
         else:
             direction = next(directions)
+            encountered_obstacle[tuple(next_position)] = direction
 
     return False
 
@@ -64,17 +65,16 @@ def main():
     obstacles_coordinates, initial_position = get_obstacles("test_input.txt")
     total_rows, total_columns = get_file_dimensions("test_input.txt")
     possible_loops = 0
-    for i in range(total_columns + 1):
-        print(i)
-        for j in range(total_rows + 1):
-            print(j)
-            print(f'Placing additional obstacle in {[i, j]}')
+    for i in range(total_columns):
+        for j in range(total_rows):
+            print(f'Placing additional obstacle in {[j, i]}')
             print(f'Old obstacles: {obstacles_coordinates}')
             new_obstacles_coordinates = obstacles_coordinates.copy()
             if [i, j] not in obstacles_coordinates:
-                new_obstacles_coordinates.append([i,j])
+                new_obstacles_coordinates.append([j,i])
             print(f'New obstacle_coordinates: {new_obstacles_coordinates}')
             loop = is_loop(new_obstacles_coordinates, initial_position, total_columns, total_rows)
+            print(f'Loop is {loop}')
             if loop:
                 possible_loops += 1
         print(f"possible_loops: {possible_loops}")
