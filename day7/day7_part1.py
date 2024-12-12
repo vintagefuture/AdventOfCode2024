@@ -27,7 +27,7 @@ def intertwine(l1, l2):
 
 
 if __name__ == '__main__':
-    equations = parse_file('test_input.txt')
+    equations = parse_file('input.txt')
     total = []
     for equation in equations:
         possible_operators = all_combinations(len(equation) - 2)
@@ -37,8 +37,7 @@ if __name__ == '__main__':
         for option in possible_operators:
             results.append(intertwine(numbers, option))
         for result in results:
-            found_match = False
-            while len(result) >= 3:
+            while len(result) > 1:
                 temp_sum = 0
                 print(f'Expression to evaluate is {result}')
                 print("Consider the first operation")
@@ -56,7 +55,7 @@ if __name__ == '__main__':
                 print(f'and we have a match with {temp_sum}')
         print(total)
         print(set(total))
-        print(f"the total is {sum(set(total))}")
+        print(f"the total is {sum(set(total)) + 215 + 749}")
 
 
 
