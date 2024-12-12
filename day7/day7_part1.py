@@ -28,7 +28,7 @@ def intertwine(l1, l2):
 
 if __name__ == '__main__':
     equations = parse_file('test_input.txt')
-    total = 0
+    total = []
     for equation in equations:
         possible_operators = all_combinations(len(equation) - 2)
         target = int(equation[0])
@@ -37,6 +37,7 @@ if __name__ == '__main__':
         for option in possible_operators:
             results.append(intertwine(numbers, option))
         for result in results:
+            found_match = False
             while len(result) >= 3:
                 temp_sum = 0
                 print(f'Expression to evaluate is {result}')
@@ -51,10 +52,11 @@ if __name__ == '__main__':
                 print(f"And now I re-added the result of the first slice which is {str(temp_sum)} so that the resulting list is now {result}")
             print(f"I stopped since I reached the end! The final temp_sum is {temp_sum}")
             if temp_sum == target:
-                total += temp_sum
+                total.append(temp_sum)
                 print(f'and we have a match with {temp_sum}')
-
-        print(f"the total is {total}")
+        print(total)
+        print(set(total))
+        print(f"the total is {sum(set(total))}")
 
 
 
