@@ -31,15 +31,24 @@ if __name__ == '__main__':
     total = 0
     for equation in equations:
         possible_operators = all_combinations(len(equation) - 2)
-        target = equation[0]
+        target = int(equation[0])
         numbers = equation[1:]
         results = []
         for option in possible_operators:
-            results.append(' '.join(intertwine(numbers, option)))
+            results.append(intertwine(numbers, option))
+        print(results)
         for result in results:
-            print(str(result))
-            if eval(result) == target:
-                total += eval(result)
+            calculation = ' '.join(result)
+            if eval(calculation) == target:
+                print(f'Match! {calculation} equals {target}')
+                total += eval(calculation)
 
-    print(total)
+        print(total)
+
+
+
+
+
+
+
 
