@@ -36,14 +36,29 @@ if __name__ == '__main__':
         results = []
         for option in possible_operators:
             results.append(intertwine(numbers, option))
-        print(results)
         for result in results:
-            calculation = ' '.join(result)
-            if eval(calculation) == target:
-                print(f'Match! {calculation} equals {target}')
-                total += eval(calculation)
+            while len(result) >= 3:
+                temp_sum = 0
+                print(f'Expression to evaluate is {result}')
+                print("Consider the first operation")
+                first_slice = result[:3]
+                print(f'First slice {first_slice}')
+                print(f"I'm going to evaluate {' '.join(first_slice)} which returns {eval(' '.join(first_slice))}")
+                temp_sum += eval(' '.join(first_slice))
+                del result[0:3]
+                print(f"I removed the slice so that the resulting list is {result}")
+                result.insert(0, str(temp_sum))
+                print(f"And now I re-added the result of the first slice which is {str(temp_sum)} so that the resulting list is now {result}")
+            print(f"I stopped since I reached the end! The final temp_sum is {temp_sum}")
+            if temp_sum == target:
+                total += temp_sum
+                print(f'and we have a match with {temp_sum}')
 
-        print(total)
+        print(f"the total is {total}")
+
+
+
+
 
 
 
