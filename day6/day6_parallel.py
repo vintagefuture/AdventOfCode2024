@@ -1,3 +1,4 @@
+import concurrent.futures
 from itertools import cycle
 
 def get_obstacles(file_path):
@@ -66,21 +67,29 @@ def is_loop(obstacles_coordinates, initial_position, total_rows, total_columns):
 
     return False
 
+# Function to check if a loop exists for given (i, j)
+def check_for_loop(obstacles_coordinates, original_obstacles, i, j, initial_position, total_rows, total_columns):
+    obstacles_coordinates = original_obstacles.copy()  # Reset obstacles each time
+    obstacles_coordinates.append([i, j])
+    return is_loop(obstacles_coordinates, initial_position, total_rows, total_columns)
+
 
 if __name__ == '__main__':
     obstacles_coordinates, initial_position = get_obstacles("input.txt")
     total_rows, total_columns = get_file_dimensions("input.txt")
-
-    loops_found = 0
     original_obstacles = obstacles_coordinates.copy()
 
-    for j in range(total_columns):
-        print(j)
-        for i in range(total_rows):
-            print(i)
-            obstacles_coordinates = original_obstacles.copy()  # Reset obstacles each time
-            obstacles_coordinates.append([i, j])
-            if is_loop(obstacles_coordinates, initial_position, total_rows, total_columns):
+    loops_found = 0
+
+    # Using ProcessPoolExecutor for parallelism
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        # Generate tasks for each (i, j) pair
+        futures = [executor.submit(check_for_loop, obstacles_coordinates, original_obstacles, i, j, initial_position, total_rows, total_columns)
+                   for j in range(total_columns) for i in range(total_rows)]
+
+        # Collect results
+        for future in concurrent.futures.as_completed(futures):
+            if future.result():
                 loops_found += 1
 
     print(f"Loops found: {loops_found}")
