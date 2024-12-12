@@ -49,13 +49,13 @@ if __name__ == '__main__':
                 print(f"I removed the slice so that the resulting list is {result}")
                 result.insert(0, str(temp_sum))
                 print(f"And now I re-added the result of the first slice which is {str(temp_sum)} so that the resulting list is now {result}")
-            print(f"I stopped since I reached the end! The final temp_sum is {temp_sum}")
             if temp_sum == target:
                 total.append(temp_sum)
                 print(f'and we have a match with {temp_sum}')
-        print(total)
-        print(set(total))
-        print(f"the total is {sum(set(total)) + 215 + 749}")
+                break
+            print(f"I stopped since I reached the end! The final temp_sum is {temp_sum}")
+
+        print(f"The total is {sum(total)}")
 
 
 
