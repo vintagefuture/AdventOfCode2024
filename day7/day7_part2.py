@@ -61,6 +61,15 @@ def transform_equation(equation):
 if __name__ == '__main__':
     equations = parse_file('test_input.txt')
     for equation in equations:
+        print('\n=======================\n')
         print(equation)
         for i in range(1,len(equation)-1):
-            print(f"{equation[i]}{equation[i+1]}")
+            local_equation = equation.copy()
+            first_element = local_equation.pop(i)
+            second_element = local_equation.pop(i)
+            print(f'Removing {first_element} and {second_element}')
+            print(f"Resulting equation after removing two elements: {local_equation}")
+            smashed = f"{first_element}{second_element}"
+            print(f'Smashed: {smashed}')
+            local_equation.insert(i, smashed)
+            print(f'New equation is: {local_equation}')
