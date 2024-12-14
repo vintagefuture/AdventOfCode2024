@@ -31,45 +31,58 @@ def all_combinations(length):
 def intertwine(l1, l2):
     return [x for x in chain.from_iterable(zip_longest(l1, l2)) if x is not None]
 
-def main():
-    equations = parse_file('input.txt')
-    total = []
+def find_additional_equations(equations):
+    additional_equations = []
     for equation in equations:
-        possible_operators = all_combinations(len(equation) - 2)
-        target = int(equation[0])
-        numbers = equation[1:]
-        results = []
-        for option in possible_operators:
-            results.append(intertwine(numbers, option))
-        for result in results:
-            while len(result) > 1:
-                temp_sum = 0
-                first_slice = result[:3]
-                temp_sum += eval(' '.join(first_slice))
-                del result[0:3]
-                result.insert(0, str(temp_sum))
-            if temp_sum == target:
-                total.append(temp_sum)
-                break
-    print(f"The total is {sum(total)}")
-
-def transform_equation(equation):
-    pass
-
-
-
-if __name__ == '__main__':
-    equations = parse_file('test_input.txt')
-    for equation in equations:
-        print('\n=======================\n')
-        print(equation)
         for i in range(1,len(equation)-1):
             local_equation = equation.copy()
             first_element = local_equation.pop(i)
             second_element = local_equation.pop(i)
-            print(f'Removing {first_element} and {second_element}')
-            print(f"Resulting equation after removing two elements: {local_equation}")
             smashed = f"{first_element}{second_element}"
-            print(f'Smashed: {smashed}')
             local_equation.insert(i, smashed)
-            print(f'New equation is: {local_equation}')
+            additional_equations.append(local_equation)
+    return additional_equations
+
+def check_equations(equations):
+    total = []
+    equations_left_to_try = equations.copy()
+    for equation in equations:
+        if len(equation) > 2:
+            possible_operators = all_combinations(len(equation) - 2)
+            target = int(equation[0])
+            numbers = equation[1:]
+            results = []
+            for option in possible_operators:
+                results.append(intertwine(numbers, option))
+            for result in results:
+                while len(result) > 1:
+                    temp_sum = 0
+                    first_slice = result[:3]
+                    temp_sum += eval(' '.join(first_slice))
+                    del result[0:3]
+                    result.insert(0, str(temp_sum))
+                if temp_sum == target:
+                    equations_left_to_try.remove(equation)
+                    total.append(temp_sum)
+                    break
+    return {"total_sum": sum(total), "still_to_try": equations_left_to_try}
+
+def count_single_values(equations):
+    total = 0
+    for equation in equations:
+        if len(equation) == 2 and equation[0] == equation[1]:
+            total += int(equation[1])
+    return total
+
+
+if __name__ == '__main__':
+    equations = parse_file('test_input.txt')
+    print(f"First round with {equations}")
+    result = check_equations(equations)["total_sum"]
+    print(f"The result is {result}")
+    additional_equations = find_additional_equations((check_equations(equations)["still_to_try"]))
+    print(f"The remaining equations are {additional_equations}")
+    result += count_single_values(additional_equations)
+    print(result)
+    result += check_equations(additional_equations)["total_sum"]
+    print(result)
